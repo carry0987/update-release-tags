@@ -1,8 +1,7 @@
 name: Update Release Tag
 description: >
   Automatically create or update sliding version tags (e.g. v1, v1.3) when a
-  new semver tag is pushed. Supports multi-level sliding, prerelease skipping,
-  and dry-run mode.
+  new semver tag is pushed.
 
 inputs:
   tag:
