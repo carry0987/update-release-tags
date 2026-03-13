@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/carry0987/update-release-tags/compare/v1.0.0...v1.0.1) (2026-03-13)
+
+
+### Bug Fixes
+
+* update action description ([669267e](https://github.com/carry0987/update-release-tags/commit/669267edbe958053362ece0d084cda39f8c76d3c))
+
 ## 1.0.0 (2026-03-13)
 
 
