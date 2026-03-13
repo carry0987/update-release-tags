@@ -1,11 +1,11 @@
-# Update Release Tag
+# Update Release Tags
 
 A GitHub Action that automatically creates or updates sliding version tags (e.g. `v1`, `v1.3`) when a new semver tag is released. Supports multi-level sliding, prerelease skipping, and dry-run mode.
 
 ## Usage
 
 ```yaml
-- uses: carry0987/update-release-tag@v1
+- uses: carry0987/update-release-tags@v1
   with:
     tag: ${{ github.event.release.tag_name }}
 ```
@@ -48,7 +48,7 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - uses: carry0987/update-release-tag@v1
+      - uses: carry0987/update-release-tags@v1
         with:
           tag: ${{ github.event.release.tag_name }}
 ```
@@ -58,7 +58,7 @@ When `v1.3.0` is released, this updates `v1` to point to the same commit.
 ### Multi-level — Update both major and minor tags
 
 ```yaml
-- uses: carry0987/update-release-tag@v1
+- uses: carry0987/update-release-tags@v1
   with:
     tag: ${{ github.event.release.tag_name }}
     levels: major,minor
@@ -91,7 +91,7 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - uses: carry0987/update-release-tag@v1
+      - uses: carry0987/update-release-tags@v1
         with:
           tag: ${{ needs.release-please.outputs.tag_name }}
           levels: major,minor
@@ -102,7 +102,7 @@ jobs:
 By default, prerelease tags are skipped:
 
 ```yaml
-- uses: carry0987/update-release-tag@v1
+- uses: carry0987/update-release-tags@v1
   with:
     tag: v2.0.0-beta.1
 # Skipped — v2 is NOT updated
@@ -111,7 +111,7 @@ By default, prerelease tags are skipped:
 To disable this behavior:
 
 ```yaml
-- uses: carry0987/update-release-tag@v1
+- uses: carry0987/update-release-tags@v1
   with:
     tag: v2.0.0-beta.1
     skip-prerelease: false
@@ -121,7 +121,7 @@ To disable this behavior:
 ### Dry-run
 
 ```yaml
-- uses: carry0987/update-release-tag@v1
+- uses: carry0987/update-release-tags@v1
   id: dry
   with:
     tag: v1.3.0
