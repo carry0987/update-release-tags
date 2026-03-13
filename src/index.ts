@@ -5,7 +5,11 @@ import { parseLevels, parseSourceTag } from './tag.js';
 async function run(): Promise<void> {
     try {
         // --- Read inputs ---
-        const tag = core.getInput('tag', { required: true });
+        const tagInput = core.getInput('tag');
+        const tag = tagInput || process.env.GITHUB_REF_NAME || '';
+        if (!tag) {
+            throw new Error('No tag provided and GITHUB_REF_NAME is not set');
+        }
         const levelsInput = core.getInput('levels');
         const prefix = core.getInput('prefix');
         const skipPrerelease = core.getBooleanInput('skip-prerelease');
@@ -29,6 +33,11 @@ async function run(): Promise<void> {
             core.setOutput('skipped', 'true');
             core.setOutput('tags-updated', '');
             core.setOutput('commit-sha', '');
+            core.setOutput('version', parsed.version.version);
+            core.setOutput('major', parsed.version.major.toString());
+            core.setOutput('minor', parsed.version.minor.toString());
+            core.setOutput('patch', parsed.version.patch.toString());
+            core.setOutput('is-prerelease', 'true');
             return;
         }
 
@@ -48,6 +57,11 @@ async function run(): Promise<void> {
         core.setOutput('skipped', 'false');
         core.setOutput('tags-updated', updatedTags.join(','));
         core.setOutput('commit-sha', sha);
+        core.setOutput('version', parsed.version.version);
+        core.setOutput('major', parsed.version.major.toString());
+        core.setOutput('minor', parsed.version.minor.toString());
+        core.setOutput('patch', parsed.version.patch.toString());
+        core.setOutput('is-prerelease', parsed.isPrerelease.toString());
 
         core.info(`Tags updated: ${updatedTags.join(', ') || '(none)'}`);
     } catch (error) {

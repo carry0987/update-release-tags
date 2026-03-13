@@ -18047,7 +18047,8 @@ function parseLevels(input) {
 //#region src/index.ts
 async function run() {
 	try {
-		const tag = getInput("tag", { required: true });
+		const tag = getInput("tag") || process.env.GITHUB_REF_NAME || "";
+		if (!tag) throw new Error("No tag provided and GITHUB_REF_NAME is not set");
 		const levelsInput = getInput("levels");
 		const prefix = getInput("prefix");
 		const skipPrerelease = getBooleanInput("skip-prerelease");
@@ -18063,6 +18064,11 @@ async function run() {
 			setOutput("skipped", "true");
 			setOutput("tags-updated", "");
 			setOutput("commit-sha", "");
+			setOutput("version", parsed.version.version);
+			setOutput("major", parsed.version.major.toString());
+			setOutput("minor", parsed.version.minor.toString());
+			setOutput("patch", parsed.version.patch.toString());
+			setOutput("is-prerelease", "true");
 			return;
 		}
 		const sha = dryRun ? "(dry-run)" : await getTagSha(tag);
@@ -18072,6 +18078,11 @@ async function run() {
 		setOutput("skipped", "false");
 		setOutput("tags-updated", updatedTags.join(","));
 		setOutput("commit-sha", sha);
+		setOutput("version", parsed.version.version);
+		setOutput("major", parsed.version.major.toString());
+		setOutput("minor", parsed.version.minor.toString());
+		setOutput("patch", parsed.version.patch.toString());
+		setOutput("is-prerelease", parsed.isPrerelease.toString());
 		info(`Tags updated: ${updatedTags.join(", ") || "(none)"}`);
 	} catch (error) {
 		if (error instanceof Error) setFailed(error.message);

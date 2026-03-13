@@ -8,8 +8,9 @@ branding:
 
 inputs:
   tag:
-    description: 'The source semver tag to slide from (e.g. v1.3.0)'
-    required: true
+    description: 'The source semver tag to slide from (e.g. v1.3.0). Falls back to GITHUB_REF_NAME if omitted.'
+    required: false
+    default: ''
   levels:
     description: 'Comma-separated tag levels to update: major, minor'
     required: false
@@ -34,6 +35,16 @@ outputs:
     description: 'The commit SHA that the source tag points to'
   skipped:
     description: 'Whether the update was skipped (true/false)'
+  version:
+    description: 'The full semver version without prefix (e.g. 1.3.0)'
+  major:
+    description: 'The major version number (e.g. 1)'
+  minor:
+    description: 'The minor version number (e.g. 3)'
+  patch:
+    description: 'The patch version number (e.g. 0)'
+  is-prerelease:
+    description: 'Whether the tag is a prerelease version (true/false)'
 
 runs:
   using: node24
